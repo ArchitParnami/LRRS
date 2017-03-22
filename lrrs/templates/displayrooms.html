@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>showrooms</title>
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link href="../static/signup.css" rel="stylesheet">
+    <link href="../static/table.css" rel="stylesheet">
+
+    <title>Success</title>
+</head>
+</head>
+<body>
+<table id="table">
+<tr>
+<th>ID</th>
+<th>Type</th>
+<th>Availability From</th>
+<th>Availability To</th>
+</tr>
+{% for row in data %}
+    <tr>
+    {% for d in row %}
+        <td>{{ d }}</td>
+    {% endfor %}
+    </tr>
+{% endfor %}
+</table>
+</body>
+</html>

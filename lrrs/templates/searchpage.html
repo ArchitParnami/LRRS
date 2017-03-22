@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link href="../static/signup.css" rel="stylesheet">
+     <script src="../static/js/jquery-3.1.1.js"></script>
+
+    <title>Success</title>
+     <script></script>
+
+</head>
+<body>
+
+    <div class="jumbotron">
+        <form class="form-signin" action="/search" method="post">
+
+
+
+            <table align="center" class="form-control">
+                <tr>
+                    <td>
+                        <label for="inputStartTime">Time</label>
+                    </td>
+                    <td align="right">
+                        <input type="datetime-local" name="inputStartTime" id="inputStartTime">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio"  id="inputIndividual" name="inputType" value="I">
+                    </td>
+                    <td align="left">
+                        <label for="inputIndividual">Individual Study</label>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <input type="radio" id="inputGroup" name="inputType" value="G">
+                    </td>
+                    <td align="left">
+                        <label for="inputGroup">Group Study</label>
+                    </td>
+                </tr>
+            </table>
+            <button id="btnSearch" type="submit" class="btn btn-lg btn-primary btn-block">Search</button>
+            </form>
+
+    </div>
+
+
+
+</body>
+</html>
