@@ -4,17 +4,19 @@
 
     <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
-    <link href="../static/signup.css" rel="stylesheet">
-     <script src="../static/js/jquery-3.1.1.js"></script>
-
-    <title>Success</title>
-     <script></script>
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet" type="text/css" >
+    <link href="../static/signup.css" rel="stylesheet" type="text/css" >
+     <script src="../static/js/jquery-3.1.1.js"  type="text/javascript"></script>
+    <title>Searchrooms</title>
 
 </head>
-<body>
-
-    <div class="jumbotron">
+<body style="background: url(../static/images/uncc.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; ">
+<h1 style="color: midnightblue;" align="center">Search Rooms</h1>
+    <div>
         <form class="form-signin" action="/search" method="post">
 
 
@@ -25,12 +27,12 @@
                         <label for="inputStartTime">Time</label>
                     </td>
                     <td align="right">
-                        <input type="datetime-local" name="inputStartTime" id="inputStartTime">
+                        <input type="datetime-local" name="inputStartTime" id="inputStartTime" required  oninvalid="this.setCustomValidity('Please enter proper time and date')"  oninput="setCustomValidity('')">
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <input type="radio"  id="inputIndividual" name="inputType" value="I">
+                        <input type="radio"  id="inputIndividual" name="inputType" value="I" required >
                     </td>
                     <td align="left">
                         <label for="inputIndividual">Individual Study</label>
@@ -38,7 +40,7 @@
                 </tr>
                 <tr>
                     <td>
-                        <input type="radio" id="inputGroup" name="inputType" value="G">
+                        <input type="radio" id="inputGroup" name="inputType" value="G" required>
                     </td>
                     <td align="left">
                         <label for="inputGroup">Group Study</label>
