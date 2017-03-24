@@ -24,10 +24,18 @@
             <table align="center" class="form-control">
                 <tr>
                     <td>
-                        <label for="inputStartTime">Time</label>
+                        <label for="inputStartDate">Date</label>
                     </td>
                     <td align="right">
-                        <input type="datetime-local" name="inputStartTime" id="inputStartTime" required  oninvalid="this.setCustomValidity('Please enter proper time and date')"  oninput="setCustomValidity('')">
+                        <input type="date" name="inputStartDate" id="inputStartDate" required  oninvalid="this.setCustomValidity('Please enter proper time and date')"  oninput="setCustomValidity('')">
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <label for="inputStartTime">Time</label>
+                    </td>
+                    <td align="left">
+                        <input type="time" name="inputStartTime" id="inputStartTime">
                     </td>
                 </tr>
                 <tr>

@@ -15,6 +15,7 @@ def hello_world():
 @app.route('/search',methods=['POST'])
 def search():
 
+    _startdate = request.form['inputStartDate']
     _starttime = request.form['inputStartTime']
     _type = request.form['inputType']
     mysql = MySQL()
@@ -27,7 +28,7 @@ def search():
 
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.callproc('sp_searchrooms', args=(_type, _starttime))
+    cursor.callproc('sp_searchrooms', args=(_type, _starttime, _startdate))
     data = cursor.fetchall()
     return render_template('displayrooms.html', data=data)
 
