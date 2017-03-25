@@ -1,12 +1,7 @@
-from flask import Flask,render_template,request
-import json
-import ctypes
-from flask import session
-from flaskext.mysql import MySQL
-from flask import url_for, redirect
+from flask import render_template,request
 
-app = Flask(__name__)
-
+from App import app
+from App import mysql
 
 @app.route('/')
 def hello_world():
@@ -18,13 +13,6 @@ def search():
     _startdate = request.form['inputStartDate']
     _starttime = request.form['inputStartTime']
     _type = request.form['inputType']
-    mysql = MySQL()
-    # MySQL configurations
-    app.config['MYSQL_DATABASE_USER'] = 'root'
-    app.config['MYSQL_DATABASE_PASSWORD'] = 'root'
-    app.config['MYSQL_DATABASE_DB'] = 'lrrs'
-    app.config['MYSQL_DATABASE_HOST'] = 'localhost'
-    mysql.init_app(app)
 
     conn = mysql.connect()
     cursor = conn.cursor()
