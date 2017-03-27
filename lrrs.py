@@ -3,9 +3,10 @@ from flask import render_template,request
 from App import app
 from App import mysql
 
-@app.route('/')
-def hello_world():
-    return render_template('searchpage.html')
+
+# @app.route('/')
+# def hello_world():
+#     return render_template('searchpage.html')
 
 @app.route('/search',methods=['POST'])
 def search():
@@ -21,6 +22,3 @@ def search():
     return render_template('displayrooms.html', data=data)
 
 
-
-if __name__ == '__main__':
-    app.run()

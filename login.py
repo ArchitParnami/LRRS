@@ -1,5 +1,6 @@
 from flask import Flask, redirect, url_for, request,json
 #render_template is for render html to your server
+import lrrs
 
 from flask import render_template, jsonify
 # sql connector
