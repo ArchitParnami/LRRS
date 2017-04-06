@@ -13,7 +13,7 @@ CREATE TABLE IF NOT EXISTS `study_room` (
   `room_no` varchar(45) DEFAULT NULL,
   `capacity` int(11) DEFAULT NULL,
   `location` varchar(45) DEFAULT NULL,
-  `rrom_type` varchar(5) DEFAULT NULL,
+  `room_type` varchar(5) DEFAULT NULL,
   PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
