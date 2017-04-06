@@ -1,13 +1,9 @@
-from flask import Flask, redirect, url_for, request,json
-#render_template is for render html to your server
-import lrrs
+from LRRS.App import app
+from LRRS.App import mysql
 
-from flask import render_template, jsonify
-# sql connector
-
-from App import  mysql
-from App import  app
-
+from flask import render_template
+from flask import request
+from flask import jsonify
 
 def queryuser(username,password):
     conn = mysql.connect()
@@ -41,7 +37,7 @@ def login():
     return render_template("login.html")
 
 
-@app.route('/checkuname.xyz',methods = ['POST'])
+@app.route('/checkuser',methods = ['POST'])
 def checkuname():
     # read the posted values from the UI
     uname = request.form['username']

@@ -1,12 +1,7 @@
 from flask import render_template,request
 
-from App import app
-from App import mysql
-
-
-# @app.route('/')
-# def hello_world():
-#     return render_template('searchpage.html')
+from LRRS.App import app
+from LRRS.App import mysql
 
 @app.route('/search',methods=['POST'])
 def search():
