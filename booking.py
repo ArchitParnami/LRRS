@@ -13,10 +13,14 @@ def redirecttobooking():
     _starttime = session.get('starttime')
     _starttimeformat = datetime.strptime(_starttime, "%I:%M %p")
     _starttimeformat = _starttimeformat.strftime("%H:%M:%S")
-    return render_template('booking.html',roomno=_room,date=_startdate,time=_starttimeformat)
+    if session.get('logged_in'):
+        return render_template('booking.html',roomno=_room,date=_startdate,time=_starttimeformat)
+    else:
+        return render_template("pleaseloginfirst.html")
 
 @app.route('/book',methods=['post'])
 def book():
+    _uname = session.get('uname')
     _room = session.get('hdnID')
     _startdate = session.get('startdate')
     _starttime =session.get('starttime')
@@ -27,6 +31,9 @@ def book():
     _endtimeformat = _endtimeformat.strftime("%H:%M:%S")
     conn = mysql.connect()
     cursor = conn.cursor()
-    cursor.callproc('sp_booking', args=('dshah27', _startdate, _name, _room, _starttimeformat, _endtimeformat))
+    cursor.callproc('sp_booking', args=(_uname, _startdate, _name, _room, _starttimeformat, _endtimeformat))
     conn.commit()
-    return render_template('thankyou.html',roomno = _room)
+    if session.get('logged_in'):
+        return render_template('thankyou.html',roomno = _room)
+    else:
+        return render_template("pleaseloginfirst.html")

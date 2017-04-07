@@ -23,6 +23,10 @@ def search():
     cursor = conn.cursor()
     cursor.callproc('sp_searchrooms', args=(_type, _starttime, _startdate))
     data = cursor.fetchall()
-    return render_template('displayrooms.html', data=data)
+    # if session.get('logged_in'):
+    if session.get('logged_in'):
+        return render_template('displayrooms.html', data=data)
+    else:
+        return render_template("pleaseloginfirst.html")
 
 

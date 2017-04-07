@@ -3,12 +3,13 @@ from flask import Flask, redirect, url_for, request,json,session
 import lrrs
 import datetime
 from flask import render_template, jsonify
+import os
 # sql connector
 
 from App import  mysql
 from App import  app
 
-app.secret_key='abcd'
+
 def queryuser(username,password):
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -38,24 +39,32 @@ def checkuser(_uname,_password):
     return status
 
 def login():
-    return render_template("login.html")
+    if not session.get('logged_in'):
+        return render_template("login.html")
+    else:
+        return "You have already logged in.  Click <a href='/searchpage.html'>here</a> to search rooms."
 
 
 @app.route('/checkuname.xyz',methods = ['POST'])
 def checkuname():
     # read the posted values from the UI
+
     uname = request.form['username']
-    session['uname'] = uname
     password = request.form['psw']
+    if checkuser(uname, password) == {'success': 1}:
+        session['uname'] = uname
+        session['logged_in'] = True
+        password = request.form['psw']
     return jsonify(checkuser(uname,password))
     
 
 @app.route('/searchpage.html')
 def searchpage():
-
-    return render_template("searchpage.html",mindate=datetime.date.today())
-
-
+    # if session.get('logged_in'):
+    if session.get('logged_in'):
+        return render_template("searchpage.html",mindate=datetime.date.today())
+    else:
+        return render_template("pleaseloginfirst.html")
 
 @app.route("/")
 def start():
@@ -63,4 +72,5 @@ def start():
 
 
 if __name__ == '__main__':
-   app.run(debug = True)
+    app.secret_key = os.urandom(12)
+    app.run()

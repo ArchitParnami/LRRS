@@ -9,4 +9,7 @@ def displaybooking():
     curr = conn.cursor()
     curr.execute("call sp_displaybooking(%s)",(_uname))
     display = curr.fetchall()
-    return render_template('displaymybooking.html',display=display)
+    if session.get('logged_in'):
+        return render_template('displaymybooking.html',display=display)
+    else:
+        return render_template("pleaseloginfirst.html")
