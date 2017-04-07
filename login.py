@@ -1,7 +1,7 @@
 from flask import Flask, redirect, url_for, request,json
 #render_template is for render html to your server
 import lrrs
-
+import datetime
 from flask import render_template, jsonify
 # sql connector
 
@@ -52,7 +52,7 @@ def checkuname():
 @app.route('/searchpage.html')
 def searchpage():
 
-    return render_template("searchpage.html")
+    return render_template("searchpage.html",mindate=datetime.date.today())
 
 
 
