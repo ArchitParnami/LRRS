@@ -1,4 +1,4 @@
-from flask import Flask, redirect, url_for, request,json
+from flask import Flask, redirect, url_for, request,json,session
 #render_template is for render html to your server
 import lrrs
 import datetime
@@ -8,7 +8,7 @@ from flask import render_template, jsonify
 from App import  mysql
 from App import  app
 
-
+app.secret_key='abcd'
 def queryuser(username,password):
     conn = mysql.connect()
     cursor = conn.cursor()
@@ -45,6 +45,7 @@ def login():
 def checkuname():
     # read the posted values from the UI
     uname = request.form['username']
+    session['uname'] = uname
     password = request.form['psw']
     return jsonify(checkuser(uname,password))
     
