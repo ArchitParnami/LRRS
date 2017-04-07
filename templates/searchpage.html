@@ -41,7 +41,7 @@
                         <label for="inputStartDate">Date</label>
                     </td>
                     <td align="left">
-                        <input type="date" name="inputStartDate" id="inputStartDate" required  oninvalid="this.setCustomValidity('Please enter proper time and date')"  oninput="setCustomValidity('')">
+                        <input type="date" min={{mindate}} name="inputStartDate" id="inputStartDate" required  oninvalid="this.setCustomValidity('Please enter proper time and date')"  oninput="setCustomValidity('')">
                     </td>
                 </tr>
                 <tr>
