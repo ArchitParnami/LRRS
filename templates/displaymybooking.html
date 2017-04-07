@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+     <meta charset="UTF-8">
+    <title>Displayrooms</title>
+    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+    <link href="../static/css/signup.css" rel="stylesheet" type="text/css" >
+
+    <script src="../static/js/jquery-3.1.1.js"  type="text/javascript"></script>
+</head>
+<body style="background: url(../static/image/uncc.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; ">
+<h1 style="color: midnightblue;" align="center">Available Rooms</h1>
+<form action="/booking" method="post" class="form-signin">
+<div>
+<table id="table"  align="center" border="1">
+<thead bgcolor="#deb887">
+<th>Booking Name</th>
+<th>Room No</th>
+<th>Date</th>
+<th>Start Time</th>
+<th>End Time</th>
+</thead>
+{% for row in display %}
+    <tr bgcolor="#f8f8ff">
+    {% for d in row %}
+        <td>{{ d }}</td>
+    {% endfor %}
+    </tr>
+{% endfor %}
+</table>
+</div>
+</form>
+</body>
+</html>
