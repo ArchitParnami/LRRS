@@ -1,52 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Displayrooms</title>
-    <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
-    <link href="../static/css/signup.css" rel="stylesheet" type="text/css" >
+   <head>
+      <meta charset="UTF-8">
+      <title>Displayrooms</title>
+      <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet">
+      <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet">
+      <link href="../static/css/signup.css" rel="stylesheet" type="text/css" >
+      <link href="../static/css/table.css" rel="stylesheet" type="text/css" >
+      <script src="../static/js/jquery-3.1.1.js"  type="text/javascript"></script>
+      <script type="text/javascript">
+         $(document).ready(function() {
+                $('.select').click(function () {
+                    var id = $(this).closest("tr").find('td:eq(1)').text();
+                    $('.hdnID').val(id);
+                });
+             })
+      </script>
+   <style>
+       dl {text-align: center;}
+       dl dt {float:left; color: black;}
+       dl dd {color: white}
+   </style>
+   </head>
 
-    <script src="../static/js/jquery-3.1.1.js"  type="text/javascript"></script>
-    <script type="text/javascript">
-
-
-    $(document).ready(function() {
-            $('.select').click(function () {
-                var id = $(this).closest("tr").find('td:eq(1)').text();
-                alert(id);
-            });
-         })
-    </script>
-
-</head>
-</head>
-
-<body style="background: url(../static/image/uncc.jpg) no-repeat center center fixed;
-  -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover; ">
-<h1 style="color: midnightblue;" align="center">Available Rooms</h1>
-<div>
-<table id="table"  align="center" border="1">
-<thead bgcolor="#deb887">
-<th>ID</th>
-<th>Room No</th>
-<th>Capacity</th>
-<th>Location</th>
-<th>Type</th>
-<th>Select Room</th>
-</thead>
-{% for row in data %}
-    <tr bgcolor="#f8f8ff">
-    {% for d in row %}
-        <td>{{ d }}</td>
-    {% endfor %}
-    <td><input type="button" value="select" class="select"></td>
-    </tr>
-{% endfor %}
-</table>
-</div>
-</body>
+   <body style="background: url(../static/image/uncc.jpg) no-repeat center center fixed;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover; ">
+      <h1 style="color: midnightblue;" align="center">Available Rooms</h1>
+      <form action="/booking" method="post" class="form-signin">
+         <div style="text-align:center">
+            <dl>
+                <dt> Search Date </dt>
+                <dd>{{search_date}}</dd>
+                <dt> Search Time</dt>
+                <dd>{{search_time}}</dd>
+                <dt>Room Type</dt>
+                <dd>{{room_type}}</dd>
+            </dl>
+         </div>
+         <div>
+            <table id="table" align="center" border="1">
+               <thead bgcolor="#deb887">
+                  <th>ID</th>
+                  <th>Room No</th>
+                  <th>Capacity</th>
+                  <th>Location</th>
+                  <th>Avail Start</th>
+                  <th>Avail End</th>
+                  <th>Select Room</th>
+               </thead>
+               {% for row in data %}
+               <tr bgcolor="#f8f8ff">
+                  {% for d in row %}
+                  <td>{{ d }}</td>
+                  {% endfor %}
+                  <td><input type="submit" value="select" class="select"></td>
+               </tr>
+               {% endfor %}
+            </table>
+            <input type="hidden" id="hdnID" name="hdnID" class="hdnID">
+         </div>
+      </form>
+   </body>
 </html>
+

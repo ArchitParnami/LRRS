@@ -2,14 +2,14 @@ from enum import Enum
 
 
 class RoomType(Enum):
-    INDIVIDUAL_STUDY = 'I'
-    GROUP_STUDY = 'G'
+    INDIVIDUAL_STUDY = 'Individual Study'
+    GROUP_STUDY = 'Group Study'
 
 
 class Location(Enum):
-    GROUND_FLOOR = 0
-    MAIN_FLOOR = 1
-    SECOND_FLOOR = 2
+    GROUND_FLOOR = 'Ground Floor'
+    MAIN_FLOOR = 'Main Floor'
+    SECOND_FLOOR = 'Second Floor'
 
 
 class Room(object):

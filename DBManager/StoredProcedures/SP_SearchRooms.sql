@@ -1,5 +1,4 @@
-DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_searchroom`(IN p_roomtype VARCHAR(50), IN p_starttime varchar(45), In p_startdate varchar(45))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `sp_searchrooms`(IN p_roomtype VARCHAR(50), IN p_starttime varchar(45), In p_startdate varchar(45))
 BEGIN
 
 SELECT * 

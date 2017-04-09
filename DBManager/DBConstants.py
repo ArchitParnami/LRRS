@@ -23,3 +23,8 @@ class DBConstants(object):
     BOOKING_NAME = 'booking_name'
     BOOKING_ROOM_NUMBER = 'room_no'
 
+    SP_SEARCH_ROOMS = 'sp_searchrooms'
+    SP_BOOKING = 'sp_booking'
+    SP_GET_USER_BOOKINGS = 'sp_displaybooking'
+
+DBC = DBConstants()
