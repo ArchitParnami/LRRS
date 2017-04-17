@@ -1,32 +1,33 @@
-from flask import render_template,request,session
-import booking
-import displaybookings
+from flask import render_template,request, session
+from datetime import datetime
+
 from App import app
 from App import mysql
-
-
-# @app.route('/')
-# def hello_world():
-#     return render_template('searchpage.html')
-app.secret_key = 'abcd'
+from DBManager.ORM import ORM
+from Entities.BookingManager import booking_manager
 
 @app.route('/search',methods=['POST'])
 def search():
 
-    _startdate = request.form['inputStartDate']
-    _starttime = request.form['inputStartTime']
-    _type = request.form['inputType']
-    session['startdate'] = _startdate
-    session['starttime'] = _starttime
+    start_date = request.form['inputStartDate']
+    start_time = request.form['inputStartTime']
+    room_type = request.form['inputType']
 
-    conn = mysql.connect()
-    cursor = conn.cursor()
-    cursor.callproc('sp_searchrooms', args=(_type, _starttime, _startdate))
-    data = cursor.fetchall()
-    # if session.get('logged_in'):
+    session['startdate'] = start_date
+    session['starttime'] = start_time
+
+    room_type = ORM.room_type_to_enum[room_type]
+    st = datetime.strptime(start_time, "%I:%M %p")
+    avail = booking_manager.search(start_date, st, room_type)
+
+    data=[]
+    for room, st, et in avail:
+        data.append([room.id, room.room_number, room.capacity, room.location.value, st.time(), et.time()])
+
     if session.get('logged_in'):
-        return render_template('displayrooms.html', data=data)
+
+        return render_template('displayrooms.html', data=data, search_date=start_date,
+                               search_time=start_time, room_type=room_type.value)
     else:
+
         return render_template("pleaseloginfirst.html")
-
-
