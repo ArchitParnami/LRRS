@@ -48,7 +48,7 @@
                    <td>
                        {%if (booking.start_date > startdate) or (booking.start_date == startdate and booking.start_time.time()  > currenttime)%}
                                 <input type="submit" value="Cancel" class="select" id="cancel">
-                            {% elif  (booking.start_date == startdate and booking.start_time.time() <= currenttime and booking.end_time.time() > currenttime) %}
+                            {% elif  (booking.booking_status == 'AC' and booking.start_date == startdate and booking.start_time.time() <= currenttime and booking.end_time.time() > currenttime) %}
                                 <a href="/notify"><input type="submit" value="Notify" class="select" id="notify"></a>
                        {% endif %}
 
