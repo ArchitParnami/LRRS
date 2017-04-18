@@ -1,24 +1,48 @@
 from LRRS.Entities.Room import Room, Location, RoomType
-from LRRS.Entities.Booking import Booking
+from LRRS.Entities.Booking import Booking, BookingStatus
 from datetime import datetime
 
 class ObjectRelationalMapper(object):
 
     def __init__(self):
         self.time_format = "%H:%M:%S"
-        self.location_to_enum = {"G": Location.GROUND_FLOOR,
-                          "M": Location.MAIN_FLOOR,
-                          "S": Location.SECOND_FLOOR}
+        self.date_format = "%Y-%m-%d"
 
-        self.room_type_to_enum = {"I": RoomType.INDIVIDUAL_STUDY,
-                           "G": RoomType.GROUP_STUDY}
+        self.location_to_enum = {
+            "G": Location.GROUND_FLOOR,
+            "M": Location.MAIN_FLOOR,
+            "S": Location.SECOND_FLOOR
+        }
 
-        self.enum_to_location = {Location.GROUND_FLOOR: "G",
-                                 Location.MAIN_FLOOR: "M",
-                                 Location.SECOND_FLOOR: "S"}
+        self.room_type_to_enum = {
+            "I": RoomType.INDIVIDUAL_STUDY,
+            "G": RoomType.GROUP_STUDY
+        }
 
-        self.enum_to_room_type = {RoomType.INDIVIDUAL_STUDY: "I",
-                                  RoomType.GROUP_STUDY: "G"}
+        self.enum_to_location = {
+            Location.GROUND_FLOOR: "G",
+            Location.MAIN_FLOOR: "M",
+            Location.SECOND_FLOOR: "S"
+        }
+
+        self.enum_to_room_type = {
+            RoomType.INDIVIDUAL_STUDY: "I",
+            RoomType.GROUP_STUDY: "G"
+        }
+
+        self.booking_status_to_enum = {
+            "NS": BookingStatus.NOT_STARTED,
+            "AC": BookingStatus.ACTIVE,
+            "CO": BookingStatus.COMPLETED,
+            "CA": BookingStatus.CANCELLED
+        }
+
+        self.enum_to_booking_status = {
+            BookingStatus.NOT_STARTED: "NS",
+            BookingStatus.ACTIVE: "AC",
+            BookingStatus.COMPLETED: "CO",
+            BookingStatus.CANCELLED: "CA"
+        }
 
 
     def RoomMapper(self, data):
@@ -43,7 +67,7 @@ class ObjectRelationalMapper(object):
             booking.end_time = self.time_delta_to_time(row[3])
             booking.start_date = row[4]
             booking.end_date = row[5]
-            booking.booking_status = row[6]
+            booking.booking_status = self.booking_status_to_enum[row[6]]
             booking.booking_name = row[7]
             booking.room_number = row[8]
             bookings.append(booking)
@@ -58,5 +82,10 @@ class ObjectRelationalMapper(object):
     def time_delta_to_time(self, delta):
         return datetime(1900, 1, 1) + delta
 
+    def string_to_date(self, str):
+        return  datetime.strptime(str, self.date_format)
+
+    def date_to_string(self, date):
+        return date.strftime(self.date_format)
 
 ORM = ObjectRelationalMapper()

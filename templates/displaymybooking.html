@@ -36,7 +36,7 @@
                    <td>{{ booking.start_date }}</td>
                    <td>{{ booking.start_time.time() }}</td>
                    <td>{{ booking.end_time.time() }}</td>
-                   <td>{{ booking.booking_status }}</td>
+                   <td>{{ booking.booking_status.value }}</td>
                </tr>
                {% endfor %}
             </table>

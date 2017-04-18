@@ -28,7 +28,9 @@ class DBHandler():
         data = self.__execute_data_query(DBQ.GET_GROUP_ROOMS())
         return ORM.RoomMapper(data)
 
+    # gets active or not started bookings
     def get_bookings(self, room_number, booking_date):
+        booking_date = ORM.date_to_string(booking_date)
         query = DBQ.GET_ROOM_BOOKINGS(room_number, booking_date)
         data = self.__execute_data_query(query)
         return ORM.BookingMapper(data)
@@ -49,8 +51,24 @@ class DBHandler():
         args = (booking.user.username, booking.start_date,
                 booking.booking_name, booking.room_number, st, et, booking.end_date)
 
-        self.__execute_sp_write(DBC.SP_BOOKING, args)
+        data = self.__execute_sp_write(DBC.SP_BOOKING, args)
+        booking_id = int(data[0][0])
+        return booking_id
 
+    def get_booking(self, booking_id):
+        query = DBQ.GET_BOOKING(booking_id)
+        data = self.__execute_data_query(query)
+        booking = ORM.BookingMapper(data)[0]
+        return booking
+
+    def update_booking_status(self, booking_id, new_status):
+        new_status = ORM.enum_to_booking_status[new_status]
+        query = DBQ.UPDATE_BOOKING_STATUS(booking_id, new_status)
+        self.__execute_query(query)
+
+    def get_current_inactive_bookings(self):
+        data = self.__execute_sp_read(DBC.SP_GET_CURRENT_INACTIVE_BOOKINGS, ())
+        return ORM.BookingMapper(data)
 
     def __execute_boolean_query(self, query):
         conn = mysql.connect()
@@ -66,17 +84,25 @@ class DBHandler():
         cursor = conn.cursor()
         cursor.execute(query)
         data = cursor.fetchall()
-        #cursor.close()
         conn.close()
         return data
+
+    def __execute_query(self, query):
+        conn = mysql.connect()
+        cursor = conn.cursor()
+        cursor.execute(query)
+        conn.commit()
+        cursor.close()
+        conn.close()
 
     def __execute_sp_write(self, sp, args):
         conn = mysql.connect()
         cursor = conn.cursor()
         cursor.callproc(sp, args)
         conn.commit()
-        cursor.close()
         conn.close()
+        data = cursor.fetchall()
+        return data
 
     def __execute_sp_read(self, sp, args):
         conn = mysql.connect()
@@ -86,6 +112,7 @@ class DBHandler():
         cursor.close()
         conn.close()
         return data
+
 
 
 dbHandler = DBHandler()

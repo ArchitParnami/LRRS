@@ -3,7 +3,7 @@ from datetime import datetime, timedelta
 from LRRS.App import app
 from LRRS.App import mysql
 from LRRS.Entities.BookingManager import booking_manager
-
+from LRRS.DBManager.ORM import ORM
 
 @app.route('/booking', methods=['POST'])
 def redirect_to_booking():
@@ -30,6 +30,7 @@ def book():
     _starttime = session.get('starttime')
     _name = request.form['bookingname']
 
+    _startdate = ORM.string_to_date(_startdate)
     _starttimeformat = datetime.strptime(_starttime, "%I:%M %p")
     _endtimeformat = datetime.strptime(_starttime, "%I:%M %p") + timedelta(minutes=int(request.form['duration']))
 

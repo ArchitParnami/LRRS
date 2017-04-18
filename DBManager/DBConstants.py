@@ -26,5 +26,6 @@ class DBConstants(object):
     SP_SEARCH_ROOMS = 'sp_searchrooms'
     SP_BOOKING = 'sp_booking'
     SP_GET_USER_BOOKINGS = 'sp_displaybooking'
+    SP_GET_CURRENT_INACTIVE_BOOKINGS = 'sp_current_inactive_bookings'
 
 DBC = DBConstants()

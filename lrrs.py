@@ -18,6 +18,8 @@ def search():
 
     room_type = ORM.room_type_to_enum[room_type]
     st = datetime.strptime(start_time, "%I:%M %p")
+    start_date = ORM.string_to_date(start_date)
+
     avail = booking_manager.search(start_date, st, room_type)
 
     data=[]

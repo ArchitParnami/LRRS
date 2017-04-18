@@ -2,6 +2,8 @@ from LRRS.DBManager.DBHandler import dbHandler
 from LRRS.Entities.Room import RoomType
 from LRRS.Entities.Booking import Booking, BookingStatus
 from LRRS.Entities.User import User
+from LRRS.Scheduler.BookingScheduler import BookingScheduler
+from LRRS.Entities.MailService import MailService
 
 from datetime import datetime
 from datetime import timedelta
@@ -12,6 +14,9 @@ class BookingManager(object):
         self.end_of_day_time = datetime.strptime('23:59:59', '%H:%M:%S')
         self.individual_rooms = dbHandler.get_individual_rooms()
         self.group_rooms = dbHandler.get_group_rooms()
+        self.bookingScheduler = BookingScheduler()
+        self.__schedule_inactive_bookings()
+        self.mail_service = MailService()
 
     def get_user_bookings(self, username):
         return dbHandler.get_user_bookings(username)
@@ -72,13 +77,14 @@ class BookingManager(object):
         if availability is not None:
             _, avail_start, avail_end = availability
             if end_time <= avail_end:
-                self.__create_booking(username, room_number, start_date, start_time, end_time, booking_name)
+                booking = self.__create_booking(username, room_number, start_date, start_time, end_time, booking_name)
+                self.__schedule_booking(booking)
                 return True
             else:
-                #available at start but not for this duration
+                # available at start but not for this duration
                 return False
         else:
-            #not availabile at start time
+            # not availabile at start time
             return False
 
     def __create_booking(self, username, room_number, start_date, start_time, end_time, booking_name):
@@ -91,9 +97,40 @@ class BookingManager(object):
         booking.end_date = start_date
         booking.booking_name = booking_name
         booking.booking_status = BookingStatus.NOT_STARTED
-        dbHandler.save_booking(booking)
+        booking_id = dbHandler.save_booking(booking)
+        booking.booking_id = booking_id
+        return booking
 
+    def cancel_booking(self, booking_id):
+        booking = dbHandler.get_booking(booking_id)
+        if booking.booking_status in [BookingStatus.ACTIVE, BookingStatus.NOT_STARTED]:
+            dbHandler.update_booking_status(booking_id, BookingStatus.CANCELLED)
+
+    def get_booking(self, booking_id):
+        return dbHandler.get_booking(booking_id)
+
+    def __schedule_inactive_bookings(self):
+        '''gets all bookings which are not started and whose start time > current time- 15 mins'''
+        bookings = dbHandler.get_current_inactive_bookings()
+        for booking in bookings:
+            self.__schedule_booking(booking)
+        self.bookingScheduler.start()
+
+    def __schedule_booking(self, booking):
+        self.bookingScheduler.schedule_booking(booking, self.__job_notify_cancel, [booking.booking_id])
+
+    def __job_notify_cancel(self, booking_id):
+        booking = self.get_booking(booking_id)
+        if booking.booking_status == BookingStatus.NOT_STARTED:
+            self.cancel_booking(booking.booking_id)
+            message = "Hello " + booking.user + ",\n" + \
+                      "Your booking for room " + booking.room_number + " from " + str(booking.start_time.time()) + " to " + \
+                      str(booking.end_time.time()) + " on " + str(booking.start_date) + \
+                      " has been cancelled because you did not check in."
+
+            print(message)
+            subj = "room reservation has been cancelled."
+            toaddr = "username@uncc.edu"
+            self.mail_service.send_mail(toaddr, subj, message)
 
 booking_manager = BookingManager()
-
-
