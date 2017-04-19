@@ -33,8 +33,7 @@ def cancelbooking():
     # bookings = bookings.sort(key=lambda booking: booking.start_date, reverse=True)
 
     if session.get('logged_in'):
-        return render_template('displaymybooking.html', user_bookings=bookings,
-                               currenttime=datetime.strptime(currenttime, "%H:%M:%S").time(), startdate=_startdate)
+        return render_template('displaymybooking.html', user_bookings=bookings,currenttime=datetime.strptime(currenttime, "%H:%M:%S").time(), startdate=_startdate)
     else:
         return render_template("pleaseloginfirst.html")
 
@@ -51,8 +50,7 @@ def notify():
     # bookings = bookings.sort(key=lambda booking: booking.start_date, reverse=True)
 
     if session.get('logged_in'):
-        return render_template('displaymybooking.html', user_bookings=bookings,
-                               currenttime=datetime.strptime(currenttime, "%H:%M:%S").time(), startdate=_startdate)
+        return render_template('displaymybooking.html', user_bookings=bookings,currenttime=datetime.strptime(currenttime, "%H:%M:%S").time(), startdate=_startdate)
     else:
         return render_template("pleaseloginfirst.html")
 
