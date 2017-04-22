@@ -10,7 +10,6 @@ from LRRS.App import mysql
 
 class DBHandler():
 
-
     def validate_user(self, oUser:User):
         query = DBQ.CHECK_USER(oUser)
         return self.__execute_boolean_query(query)
@@ -39,12 +38,8 @@ class DBHandler():
         data = self.__execute_sp_read(DBC.SP_GET_USER_BOOKINGS, [username])
         return ORM.BookingMapper(data)
 
-    def search_rooms(self, start_date, start_time, room_type):
-        args = (room_type, start_time, start_date)
-        return self.__execute_sp_read(DBC.SP_SEARCH_ROOMS, args)
 
     def save_booking(self, booking):
-
         st = ORM.time_to_string(booking.start_time)
         et = ORM.time_to_string(booking.end_time)
 

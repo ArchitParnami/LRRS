@@ -8,6 +8,16 @@
       <link href="../static/css/signup.css" rel="stylesheet" type="text/css" >
        <link href="../static/css/table.css" rel="stylesheet" type="text/css" >
        <script src="../static/js/jquery-3.1.1.js"  type="text/javascript"></script>
+       <script type="text/javascript">
+         $(document).ready(function() {
+                $('.select').click(function () {
+                    var booking_id = $(this).closest("tr").find('td:eq(0)').text();
+                    var request_type = $(this).attr('id')
+                    $('.hdnBookingid').val(booking_id);
+                    $('.hdnRequestType').val(request_type);
+                });
+             })
+      </script>
 
    </head>
    <body style="background: url(../static/image/uncc.jpg) no-repeat center center fixed;
@@ -16,16 +26,16 @@
       -o-background-size: cover;
       background-size: cover; ">
       <h1 style="color: midnightblue;" align="center">My Bookings</h1>
-      <form action="/booking" method="post" class="form-signin">
+      <form action="/modifybooking" method="post" class="form-signin">
          <div>
-            <table id="table"  align="center" border="1">
+            <table id="table" border="1">
                <thead bgcolor="#deb887">
                   <th>Booking ID</th>
                   <th>Room No</th>
-                  <th>Booking Name</th>
+                  <th>Name</th>
                   <th>Date</th>
                   <th>Start Time</th>
-                  <th>End Time</th>
+                  <th>Upto </th>
                   <th>Status</th>
                </thead>
                {% for booking in user_bookings %}
@@ -37,9 +47,23 @@
                    <td>{{ booking.start_time.time() }}</td>
                    <td>{{ booking.end_time.time() }}</td>
                    <td>{{ booking.booking_status.value }}</td>
+
+                   {%if (booking.booking_status.value == "Not Started") %}
+                            <td><input type="submit" value="Cancel" class="select" id="cancel"> </td>
+                            {%if (booking.start_date == currentdate) and
+                                 (currenttime >= (booking.start_time - timedelta(minutes=15)).time() and
+                                  currenttime <= (booking.start_time + timedelta(minutes=15)).time()) %}
+                                <td><input type="submit" value="Check-In" class="select" id="checkin"> </td>
+                            {% endif %}
+                   {% elif  (booking.booking_status.value == "Active") %}
+                            <td><input type="submit" value="End" class="select" id="end"> </td>
+                   {% endif %}
+
                </tr>
                {% endfor %}
             </table>
+             <input type="hidden" id="hdnBookingid" name="hdnBookingid" class="hdnBookingid">
+             <input type="hidden" id="hdnRequestType" name="hdnRequestType" class="hdnRequestType">
          </div>
       </form>
    </body>

@@ -79,13 +79,13 @@ class BookingManager(object):
             if end_time <= avail_end:
                 booking = self.__create_booking(username, room_number, start_date, start_time, end_time, booking_name)
                 self.__schedule_booking(booking)
-                return True
+                return (True, booking.booking_id)
             else:
                 # available at start but not for this duration
-                return False
+                return (False, -1)
         else:
             # not availabile at start time
-            return False
+            return (False, -1)
 
     def __create_booking(self, username, room_number, start_date, start_time, end_time, booking_name):
         booking = Booking()
@@ -100,11 +100,6 @@ class BookingManager(object):
         booking_id = dbHandler.save_booking(booking)
         booking.booking_id = booking_id
         return booking
-
-    def cancel_booking(self, booking_id):
-        booking = dbHandler.get_booking(booking_id)
-        if booking.booking_status in [BookingStatus.ACTIVE, BookingStatus.NOT_STARTED]:
-            dbHandler.update_booking_status(booking_id, BookingStatus.CANCELLED)
 
     def get_booking(self, booking_id):
         return dbHandler.get_booking(booking_id)
@@ -122,7 +117,7 @@ class BookingManager(object):
     def __job_notify_cancel(self, booking_id):
         booking = self.get_booking(booking_id)
         if booking.booking_status == BookingStatus.NOT_STARTED:
-            self.cancel_booking(booking.booking_id)
+            dbHandler.update_booking_status(booking_id, BookingStatus.CANCELLED)
             message = "Hello " + booking.user + ",\n" + \
                       "Your booking for room " + booking.room_number + " from " + str(booking.start_time.time()) + " to " + \
                       str(booking.end_time.time()) + " on " + str(booking.start_date) + \
@@ -130,7 +125,30 @@ class BookingManager(object):
 
             print(message)
             subj = "room reservation has been cancelled."
-            toaddr = "username@uncc.edu"
+            toaddr = "aparnami@uncc.edu"
             self.mail_service.send_mail(toaddr, subj, message)
+
+    def check_in(self, booking_id):
+        booking = dbHandler.get_booking(booking_id)
+        if booking.booking_status == BookingStatus.NOT_STARTED:
+            dbHandler.update_booking_status(booking_id, BookingStatus.ACTIVE)
+            self.bookingScheduler.unschedule_booking(booking_id)
+            self.bookingScheduler.schedule_for_completion(booking, self.end_booking, args=[booking.booking_id, True])
+
+
+    def cancel_booking(self, booking_id):
+        booking = dbHandler.get_booking(booking_id)
+        if booking.booking_status == BookingStatus.NOT_STARTED:
+            dbHandler.update_booking_status(booking_id, BookingStatus.CANCELLED)
+            self.bookingScheduler.unschedule_booking(booking_id)
+
+    def end_booking(self, booking_id, fromScheduler=False):
+        booking = dbHandler.get_booking(booking_id)
+        if booking.booking_status == BookingStatus.ACTIVE:
+            dbHandler.update_booking_status(booking_id, BookingStatus.COMPLETED)
+            if not fromScheduler:
+                self.bookingScheduler.unschedule_booking(booking_id)
+
+
 
 booking_manager = BookingManager()

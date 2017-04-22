@@ -21,6 +21,16 @@
                     template: 'dropdown'
                 })
             });
+
+            $(function(){
+                if (!Modernizr.inputtypes.date) {
+                $('input[type=date]').datepicker({
+                      dateFormat : 'mm/dd/yyyy'
+                    }
+                 );
+            }
+    });
+
         </script>
 
 </head>
@@ -30,7 +40,7 @@
   -o-background-size: cover;
   background-size: cover; ">
 <h1 style="color: midnightblue;" align="center">Search Rooms</h1>
-    <form  action="/displaybookings" method="post">
+    <form  action="/displaybookings" method="get">
         <table align="center">
             <tr>
                 <td>
@@ -50,7 +60,7 @@
                         <label for="inputStartDate">Date</label>
                     </td>
                     <td align="left">
-                        <input type="date" min={{mindate}} name="inputStartDate" id="inputStartDate" required  oninvalid="this.setCustomValidity('Please enter proper time and date')"  oninput="setCustomValidity('')">
+                        <input type="date" min={{mindate}} value={{mindate}} name="inputStartDate" id="inputStartDate" required  oninvalid="this.setCustomValidity('Please enter proper time and date')"  oninput="setCustomValidity('')">
                     </td>
                 </tr>
                 <tr>

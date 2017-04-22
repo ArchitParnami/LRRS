@@ -6,16 +6,12 @@ from email.mime.text import MIMEText
 
 class MailService(object):
     def __init__(self):
-        self.fromaddr = "your_username@gmail.com"
+        self.fromaddr = "architparnami42@gmail.com"
         self.server_name = "smtp.gmail.com"
         self.port = 587
-        self.username = "your_username"
-        self.password =  "your_password"
-        self.server = smtplib.SMTP(self.server_name, self.port)
-        self.server.ehlo()
-        self.server.starttls()
-        self.server.ehlo()
-        self.server.login(self.username, self.password)
+        self.username = "architparnami42"
+        self.password =  ""
+
 
     def send_mail(self, toaddr, subject, body):
         msg =  MIMEMultipart()
@@ -24,4 +20,10 @@ class MailService(object):
         msg['Subject'] = subject
         msg.attach(MIMEText(body, 'plain'))
         text = msg.as_string()
-        self.server.sendmail(self.fromaddr, toaddr, text)
+        server = smtplib.SMTP(self.server_name, self.port)
+        server.ehlo()
+        server.starttls()
+        server.ehlo()
+        server.login(self.username, self.password)
+        server.sendmail(self.fromaddr, toaddr, text)
+        server.quit()

@@ -36,7 +36,7 @@ def book():
 
     if session.get('logged_in'):
 
-        status = booking_manager.try_book_room(_room, _startdate, _starttimeformat, _endtimeformat, _uname, _name)
+        status, booking_id = booking_manager.try_book_room(_room, _startdate, _starttimeformat, _endtimeformat, _uname, _name)
 
         if status:
             return render_template('thankyou.html', roomno=_room)

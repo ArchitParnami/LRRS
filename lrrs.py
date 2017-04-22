@@ -28,7 +28,7 @@ def search():
 
     if session.get('logged_in'):
 
-        return render_template('displayrooms.html', data=data, search_date=start_date,
+        return render_template('displayrooms.html', data=data, search_date=start_date.date(),
                                search_time=start_time, room_type=room_type.value)
     else:
 
