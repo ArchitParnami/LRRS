@@ -79,6 +79,7 @@ class BookingManager(object):
             if end_time <= avail_end:
                 booking = self.__create_booking(username, room_number, start_date, start_time, end_time, booking_name)
                 self.__schedule_booking(booking)
+                self.__notify_booking_confirmation(booking)
                 return (True, booking.booking_id)
             else:
                 # available at start but not for this duration
@@ -118,15 +119,28 @@ class BookingManager(object):
         booking = self.get_booking(booking_id)
         if booking.booking_status == BookingStatus.NOT_STARTED:
             dbHandler.update_booking_status(booking_id, BookingStatus.CANCELLED)
-            message = "Hello " + booking.user + ",\n" + \
+            message = "Hello!\n\n"+ \
                       "Your booking for room " + booking.room_number + " from " + str(booking.start_time.time()) + " to " + \
                       str(booking.end_time.time()) + " on " + str(booking.start_date) + \
                       " has been cancelled because you did not check in."
 
-            print(message)
-            subj = "room reservation has been cancelled."
-            toaddr = "aparnami@uncc.edu"
+            #print(message)
+            subj = "Your room reservation has been cancelled."
+            toaddr = booking.user +"@uncc.edu"
             self.mail_service.send_mail(toaddr, subj, message)
+
+    def __notify_booking_confirmation(self, booking):
+        message = "Hello!\n\n" + \
+                  "Your reservation is confirmed for:\n\n J. Murrey Atkins Library \n\n " + \
+                  booking.room_number + " from " + str(booking.start_time.time()) + " until " + \
+                  str(booking.end_time.time()) + " on " + str(booking.start_date.date()) + ".\n\n" + \
+                "Booking ID: " + str(booking.booking_id) + "\n" + \
+                "Booking Name: " + booking.booking_name
+
+        # print(message)
+        subj = "Reservation Confirmed!"
+        toaddr = booking.user.username + "@uncc.edu"
+        self.mail_service.send_mail(toaddr, subj, message)
 
     def check_in(self, booking_id):
         booking = dbHandler.get_booking(booking_id)

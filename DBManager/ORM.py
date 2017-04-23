@@ -1,5 +1,6 @@
 from LRRS.Entities.Room import Room, Location, RoomType
 from LRRS.Entities.Booking import Booking, BookingStatus
+from LRRS.Entities.User import User
 from datetime import datetime
 
 class ObjectRelationalMapper(object):
@@ -72,6 +73,13 @@ class ObjectRelationalMapper(object):
             booking.room_number = row[8]
             bookings.append(booking)
         return bookings
+
+    def UserMapper(self, data):
+        users = []
+        for row in data:
+            user = User(row[0])
+            users.append(user)
+        return users
 
     def string_to_time(self, t):
         return datetime.strptime(t, self.time_format)

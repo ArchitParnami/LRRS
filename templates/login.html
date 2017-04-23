@@ -1,21 +1,63 @@
 <html>
    <head>
    		<title>login</title>
-   		<h1>Please enter your username and password</h1>
 
          <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
          <script type="text/javascript" src="static/js/login.js"></script>
-          <link href="../static/css/login.css" rel="stylesheet" type="text/css" >
+         <link href="http://getbootstrap.com/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+         <link href="http://getbootstrap.com/examples/jumbotron-narrow/jumbotron-narrow.css" rel="stylesheet" type="text/css" >
+         <link href="../static/css/signup.css" rel="stylesheet" type="text/css" >
+
+
+        <style>
+
+           h1 {
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 100px ;
+            font-style: bold;
+
+           }
+
+           table {
+               border-spacing: 10px;
+               border-collapse: initial;
+           }
+
+       </style>
+
    </head>
-   <body>
+   <body style="background: url(../static/image/uncc.jpg) no-repeat center center fixed;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover; ">
+
+   <h1 style="color: white;" align="center">J. Murrey Atkins Library</h1>
       
-      <form action = "/checkuser" method = "post">
-         User name:<br>
-         <input type = "text" id="username" name = "username" size = "15" maxlength = "15"><br>
-         User password:<br>
-         <input type = "password" id="password" name = "psw" size = "15" maxlength = "15" ><br>
-         <br>
-         <input type="button" id="login" value="login">
+      <form class="form-signin" action = "/checkuser" method = "post">
+
+
+            <table align="center" class="form-control">
+                <tr>
+                    <td>
+                        <label for="username">Username</label>
+                    </td>
+                    <td align="left">
+                        <input type="text"  id="username" name = "username" size = "15" maxlength = "15">
+                    </td>
+                </tr>
+
+                 <tr>
+                    <td>
+                        <label for="password">Password</label>
+                    </td>
+                    <td align="left">
+                        <input type = "password" id="password" name = "psw" size = "15" maxlength = "15">
+                    </td>
+                </tr>
+
+            </table>
+         <input type="button" id="login"  class="btn btn-lg btn-primary btn-block" value="login">
       </form>
       
    </body>

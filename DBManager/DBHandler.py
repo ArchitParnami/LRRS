@@ -14,6 +14,16 @@ class DBHandler():
         query = DBQ.CHECK_USER(oUser)
         return self.__execute_boolean_query(query)
 
+    def get_user(self, username):
+        query = DBQ.GET_USER(username)
+        data = self.__execute_data_query(query)
+        users = ORM.UserMapper(data)
+        if len(users) > 0:
+            return users[0]
+        else:
+            return None
+
+
     def get_individual_rooms(self):
         data = self.__execute_data_query(DBQ.GET_INDIVIDUAL_ROOMS())
         return ORM.RoomMapper(data)

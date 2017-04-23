@@ -5,8 +5,10 @@ from LRRS.App import app
 from LRRS.App import mysql
 from LRRS.DBManager.ORM import ORM
 from LRRS.Entities.BookingManager import booking_manager
+from flask_login import login_required
 
 @app.route('/search',methods=['POST'])
+@login_required
 def search():
 
     start_date = request.form['inputStartDate']
@@ -26,10 +28,5 @@ def search():
     for room, st, et in avail:
         data.append([room.id, room.room_number, room.capacity, room.location.value, st.time(), et.time()])
 
-    if session.get('logged_in'):
-
-        return render_template('displayrooms.html', data=data, search_date=start_date.date(),
+    return render_template('displayrooms.html', data=data, search_date=start_date.date(),
                                search_time=start_time, room_type=room_type.value)
-    else:
-
-        return render_template("pleaseloginfirst.html")

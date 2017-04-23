@@ -6,10 +6,10 @@ from email.mime.text import MIMEText
 
 class MailService(object):
     def __init__(self):
-        self.fromaddr = "architparnami42@gmail.com"
+        self.fromaddr = "atkins.library.uncc@gmail.com"
         self.server_name = "smtp.gmail.com"
         self.port = 587
-        self.username = "architparnami42"
+        self.username = "atkins.library.uncc"
         self.password =  ""
 
 

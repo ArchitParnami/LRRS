@@ -7,25 +7,39 @@ from LRRS import lrrs
 from LRRS import BookRoom
 from LRRS import displaybookings
 
-from flask import render_template
+from flask import render_template, redirect, url_for
 from flask import request
 from flask import jsonify
 from flask import session
+from flask_login import LoginManager, login_required, login_user, logout_user, current_user
 from datetime import datetime
 
 import os
 
-def login():
-    if not session.get('logged_in'):
-        return render_template("login.html")
-    else:
-        return "You have already logged in.  Click <a href='/searchpage.html'>here</a> to search rooms."
+loginManager = LoginManager()
+loginManager.init_app(app)
+loginManager.login_view="login"
 
+@loginManager.user_loader
+def load_user(user_id):
+    return dbHandler.get_user(user_id)
+
+@app.route('/login')
+def login():
+    if current_user.is_authenticated:
+        return redirect(url_for('searchpage'))
+    else:
+        return render_template("login.html")
+
+@app.route("/logout")
+@login_required
+def logout():
+    logout_user()
+    return redirect(url_for('login'))
 
 @app.route('/checkuname',methods=['POST'])
 def checkuname():
 
-    # read the posted values from the UI
     uname = request.form['username']
     password = request.form['psw']
 
@@ -35,26 +49,28 @@ def checkuname():
     status = dbHandler.validate_user(oUser)
 
     if status == 1:
-        session['uname'] = uname
-        session['logged_in'] = True
+        oUser.authenticate()
+        login_user(oUser)
 
     return jsonify({'success': status})
     
 
 @app.route('/searchpage.html')
+@app.route('/search')
+@app.route('/booking')
+@login_required
 def searchpage():
-    if session.get('logged_in'):
-        return render_template("searchpage.html", mindate=datetime.today())
-    else:
-        return render_template("pleaseloginfirst.html")
-
+    return render_template("searchpage.html", mindate=datetime.today())
 
 
 @app.route("/")
 def start():
-    return login()
+    if current_user.is_authenticated:
+        return redirect(url_for('searchpage'))
+    else:
+        return redirect(url_for('login'))
 
 
 if __name__ == '__main__':
     app.secret_key = os.urandom(12)
-    app.run(debug=True)
+    app.run(debug=True, threaded=True)

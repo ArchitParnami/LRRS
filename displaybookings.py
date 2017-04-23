@@ -4,8 +4,10 @@ from LRRS.App import mysql
 from LRRS.Entities.BookingManager import booking_manager
 from datetime import  datetime, timedelta
 from LRRS.DBManager.ORM import ORM
+from flask_login import login_required, current_user
 
 @app.route('/displaybookings',methods=['GET'])
+@login_required
 def displaybooking():
 
     current_time = datetime.now().time()
@@ -13,16 +15,13 @@ def displaybooking():
     current_time = ORM.string_to_time(current_time).time()
     current_date = datetime.now().date()
 
-    _uname = session.get('uname')
+    _uname = current_user.username
     bookings = booking_manager.get_user_bookings(_uname)
     bookings.sort(key=lambda booking: (booking.start_date, booking.start_time), reverse=True)
 
-    if session.get('logged_in'):
-        return render_template('displaymybooking.html', user_bookings=bookings,
-                               currenttime=current_time, currentdate=current_date, timedelta=timedelta)
-    else:
-        return render_template("pleaseloginfirst.html")
 
+    return render_template('displaymybooking.html', user_bookings=bookings,
+                               currenttime=current_time, currentdate=current_date, timedelta=timedelta)
 
 @app.route('/modifybooking', methods=['POST'])
 def modify_booking():
@@ -48,3 +47,10 @@ def modify_booking():
 
     return redirect(url_for('displaybooking'))
 
+@app.route('/fromBooking', methods=['POST'])
+def from_bookings():
+    button_clicked = request.form['hdnBtnId']
+    if button_clicked == "btnHome":
+        return redirect(url_for('searchpage'))
+    if button_clicked == "btnLogout":
+        return redirect(url_for('logout'))

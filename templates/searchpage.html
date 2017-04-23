@@ -22,16 +22,32 @@
                 })
             });
 
-            $(function(){
-                if (!Modernizr.inputtypes.date) {
-                $('input[type=date]').datepicker({
-                      dateFormat : 'mm/dd/yyyy'
-                    }
-                 );
-            }
-    });
+           <!--$(function(){-->
+                <!--if (!Modernizr.inputtypes.date) {-->
+                <!--$('input[type=date]').datepicker({-->
+                      <!--dateFormat : 'mm/dd/yyyy'-->
+                    <!--}-->
+                 <!--);-->
+            <!--}-->
+            <!--});-->
 
         </script>
+
+    <style>
+
+        h1 {
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 100px ;
+            font-style: bold;
+        }
+
+        form#logoutform {
+            padding: 20px;
+            margin: auto;
+            max-width: 200px;
+        }
+
+    </style>
 
 </head>
 <body style="background: url(../static/image/uncc.jpg) no-repeat center center fixed;
@@ -39,7 +55,7 @@
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover; ">
-<h1 style="color: midnightblue;" align="center">Search Rooms</h1>
+<h1 style="color: white;" align="center">Search Rooms</h1>
     <form  action="/displaybookings" method="get">
         <table align="center">
             <tr>
@@ -96,9 +112,13 @@
             </table>
             <button id="btnSearch" type="submit" class="btn btn-lg btn-primary btn-block">Search</button>
             </form>
-
     </div>
 
+    <div>
+        <form class="form-signin" id="logoutform" action="/logout">
+             <button id="btnLogout" type="submit" class="btn btn-lg btn-primary btn-block">Logout</button>
+        </form>
+    </div>
 
 
 </body>

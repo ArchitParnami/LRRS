@@ -17,7 +17,47 @@
                     $('.hdnRequestType').val(request_type);
                 });
              })
+         $(document).ready(function() {
+            $('.btn').click(function () {
+                    var id = $(this).attr('id')
+                    $('.hdnBtnId').val(id);
+                });
+         })
       </script>
+       <style>
+            body {
+                padding-top: 0;
+            }
+
+           table#buttonTable {
+            border-spacing: 60px;
+            border-collapse: separate;
+            border-padding: 0px;
+            border: none;
+           }
+
+           table#buttonTable h1 {
+            margin: 0;
+           }
+
+           #buttonTable td {
+            padding : 0px;
+            border: 0px;
+            border-style : none;
+           }
+
+           h1 {
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 100px ;
+            font-style: bold;
+
+           }
+
+          form.form-signin {
+            max-width: 100%;
+          }
+
+       </style>
 
    </head>
    <body style="background: url(../static/image/uncc.jpg) no-repeat center center fixed;
@@ -25,10 +65,27 @@
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover; ">
-      <h1 style="color: midnightblue;" align="center">My Bookings</h1>
+
+
+      <form  action="/fromBooking" method="post">
+        <table id="buttonTable" align="center">
+            <tr>
+                 <td>
+                    <button id="btnHome" type="submit" class="btn btn-lg btn-primary btn-block">Home</button>
+                </td>
+                <td>
+                    <h1 style="color: white;"  align="center">My Bookings</h1>
+                </td>
+                 <td>
+                    <button id="btnLogout" type="submit" class="btn btn-lg btn-primary btn-block">Logout</button>
+                </td>
+            </tr>
+        </table>
+     <input type="hidden" id="hdnBtnId" name="hdnBtnId" class="hdnBtnId">
+    </form>
       <form action="/modifybooking" method="post" class="form-signin">
          <div>
-            <table id="table" border="1">
+            <table id="table" border="1" align="center">
                <thead bgcolor="#deb887">
                   <th>Booking ID</th>
                   <th>Room No</th>
@@ -47,6 +104,7 @@
                    <td>{{ booking.start_time.time() }}</td>
                    <td>{{ booking.end_time.time() }}</td>
                    <td>{{ booking.booking_status.value }}</td>
+
 
                    {%if (booking.booking_status.value == "Not Started") %}
                             <td><input type="submit" value="Cancel" class="select" id="cancel"> </td>

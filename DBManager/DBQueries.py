@@ -47,5 +47,10 @@ class DBQueries():
                 " WHERE " + DBC.BOOKING_ID + " = '" + str(booking_id) + "';"
         return query
 
+    def GET_USER(self, username):
+        query = "SELECT "+ DBC.USER_USERNAME + \
+                " FROM " +  DBC.TABLE_USER + \
+                " WHERE " + DBC.USER_USERNAME + " ='" + username + "';"
+        return query
 
 DBQ = DBQueries()
