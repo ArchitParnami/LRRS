@@ -1,14 +1,14 @@
+from interface import implements
 from LRRS.DBManager.DBQueries import DBQ
 from LRRS.DBManager.DBConstants import DBC
 from LRRS.Entities.Booking import Booking
 from LRRS.Entities.Room import Room, Location, RoomType
 from LRRS.Entities.User import User
 from LRRS.DBManager.ORM import ORM
-
-
+from LRRS.DBManager.IDBHandler import IDBHandler
 from LRRS.App import mysql
 
-class DBHandler():
+class DBHandler(implements(IDBHandler)):
 
     def validate_user(self, oUser:User):
         query = DBQ.CHECK_USER(oUser)
@@ -22,7 +22,6 @@ class DBHandler():
             return users[0]
         else:
             return None
-
 
     def get_individual_rooms(self):
         data = self.__execute_data_query(DBQ.GET_INDIVIDUAL_ROOMS())

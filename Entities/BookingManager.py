@@ -1,4 +1,6 @@
 from LRRS.DBManager.DBHandler import dbHandler
+#from LRRS.DBManager.MockDBHandler import dbHandler
+
 from LRRS.Entities.Room import RoomType
 from LRRS.Entities.Booking import Booking, BookingStatus
 from LRRS.Entities.User import User

@@ -1,5 +1,7 @@
 from LRRS.App import app
 from LRRS.DBManager.DBHandler import dbHandler
+#from LRRS.DBManager.MockDBHandler import dbHandler
+
 from LRRS.Entities.User import User
 from LRRS.Entities.BookingManager import booking_manager
 

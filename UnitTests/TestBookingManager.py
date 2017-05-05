@@ -37,7 +37,7 @@ class TestBookingManager(unittest.TestCase):
             else:
                 book_till = endsAt
 
-            result, booking_id = booking_manager.try_book_room(room.room_number, start_date, startsAt, book_till, "archit", name)
+            result, booking_id = booking_manager.try_book_room(room.room_number, start_date, startsAt, book_till, "aparnami", name)
             assert result == True
             return booking_id
 
