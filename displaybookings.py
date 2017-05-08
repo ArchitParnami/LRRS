@@ -1,56 +1,60 @@
-from flask import render_template,request,session
+from flask import render_template,request,session, redirect, url_for
 from App import app
 from App import mysql
 from Entities.BookingManager import booking_manager
-from datetime import datetime, timedelta
-from DBManager.DBHandler import dbHandler
+from datetime import  datetime, timedelta
+from DBManager.ORM import ORM
+from flask_login import login_required, current_user
+from nocache import nocache
 
-@app.route('/displaybookings',methods=['POST'])
+@app.route('/displaybookings',methods=['GET'])
+@nocache
+@login_required
 def displaybooking():
-    _starttime = datetime.now().time()
-    currenttime = _starttime.strftime("%H:%M:%S")
-    _startdate = datetime.now().date()
-    _uname = session.get('uname')
+
+    current_time = datetime.now().time()
+    current_time = ORM.time_to_string(current_time)
+    current_time = ORM.string_to_time(current_time).time()
+    current_date = datetime.now().date()
+
+    _uname = current_user.username
     bookings = booking_manager.get_user_bookings(_uname)
-    #bookings = bookings.sort(key=lambda booking: booking.start_date, reverse=True)
+    bookings.sort(key=lambda booking: (booking.start_date, booking.start_time), reverse=True)
 
-    if session.get('logged_in'):
-        return render_template('displaymybooking.html',user_bookings=bookings,currenttime=datetime.strptime(currenttime,"%H:%M:%S").time(),startdate=_startdate)
+
+    return render_template('displaymybooking.html', user_bookings=bookings,
+                               currenttime=current_time, currentdate=current_date, timedelta=timedelta)
+
+@app.route('/modifybooking', methods=['POST'])
+@nocache
+def modify_booking():
+    booking_id = request.form['hdnBookingid']
+    request_type = request.form['hdnRequestType']
+
+    message = ""
+
+    if request_type == "cancel":
+        booking_manager.cancel_booking(booking_id)
+        message = "Your booking has been cancelled"
+
+    elif request_type == "checkin":
+        booking_manager.check_in(booking_id)
+        message = "Your booking has started"
+
+    elif request_type == "end":
+        booking_manager.end_booking(booking_id)
+        message = "Your booking has completed"
+
     else:
-        return render_template("pleaseloginfirst.html")
+        message = "Invalid request"
 
+    return redirect(url_for('displaybooking'))
 
-@app.route('/cancel',methods=['POST'])
-def cancelbooking():
-    _uname = session.get('uname')
-    _bookingid = request.form['hdnBookingid']
-    dbHandler.cancel_booking(_bookingid)
-    _starttime = datetime.now().time()
-    currenttime = _starttime.strftime("%H:%M:%S")
-    _startdate = datetime.now().date()
-    _uname = session.get('uname')
-    bookings = booking_manager.get_user_bookings(_uname)
-    # bookings = bookings.sort(key=lambda booking: booking.start_date, reverse=True)
-
-    if session.get('logged_in'):
-        return render_template('displaymybooking.html', user_bookings=bookings,currenttime=datetime.strptime(currenttime, "%H:%M:%S").time(), startdate=_startdate)
-    else:
-        return render_template("pleaseloginfirst.html")
-
-@app.route('/notify',methods=['POST'])
-def notify():
-    _uname = session.get('uname')
-    _bookingid = request.form['hdnBookingid']
-    dbHandler.notify_booking(_bookingid)
-    _starttime = datetime.now().time()
-    currenttime = _starttime.strftime("%H:%M:%S")
-    _startdate = datetime.now().date()
-    _uname = session.get('uname')
-    bookings = booking_manager.get_user_bookings(_uname)
-    # bookings = bookings.sort(key=lambda booking: booking.start_date, reverse=True)
-
-    if session.get('logged_in'):
-        return render_template('displaymybooking.html', user_bookings=bookings,currenttime=datetime.strptime(currenttime, "%H:%M:%S").time(), startdate=_startdate)
-    else:
-        return render_template("pleaseloginfirst.html")
-
+@app.route('/fromBooking', methods=['POST'])
+@nocache
+def from_bookings():
+    button_clicked = request.form['hdnBtnId']
+    if button_clicked == "btnHome":
+        return redirect(url_for('searchpage'))
+    if button_clicked == "btnLogout":
+        return redirect(url_for('logout'))
