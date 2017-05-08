@@ -2,10 +2,10 @@ from enum import Enum
 
 
 class BookingStatus(Enum):
-    NOT_STARTED = 'NS'
-    ACTIVE = 'AC'
-    COMPLETED = 'CO'
-    CANCELLED = 'CA'
+    NOT_STARTED = 'Not Started'
+    ACTIVE = 'Active'
+    COMPLETED = 'Completed'
+    CANCELLED = 'Cancelled'
 
 
 class Booking(object):
