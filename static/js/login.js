@@ -27,21 +27,23 @@ $(document).ready
 
 						$.post
 						(
-							"checkuname.xyz",
+							"checkuname",
 							{ username:email, psw:password},
 							function(response){
 								//var response = $.parseJSON(data);
 								console.log('this is step 40')
 								console.log(response);
-								if(response.success !=1)
+								if(response.success)
 								{
-									//alert("Post method successful, but user account does not exist!");
-									alert("incorrect username or password!");
+									// alert("Post method successful, and user account exist!");
+                                    window.location.href = "/searchpage.html";
 								}
 								else
 								{
-									// alert("Post method successful, and user account exist!");
-									window.location.href = "/searchpage.html";
+                  
+                                      //alert("Post method successful, but user account does not exist!");
+                                      alert("incorrect username or password!");
+									
 								}
 								
 							}
