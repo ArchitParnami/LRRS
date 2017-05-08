@@ -22,5 +22,8 @@ p_enddate,
 'NS',
 p_bookingname,
 p_room);
+
+SELECT last_insert_id();
+
 END$$
 DELIMITER ;

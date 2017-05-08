@@ -1,6 +1,7 @@
 USE LRRS;
 
-INSERT  INTO user_info VALUES ( 'archit', 'a123'), ('dharak', 'd123'), ('junqing', 'j123');
+INSERT  INTO user_info VALUES ( 'aparnami', '1234'), ('dshah27', '1234'), ('jma15', '1234'),
+                              ('lramumee', '1234'),('achand12', '1234'), ('nyadav3', '1234');
 
 INSERT INTO study_room(room_no, capacity, location, room_type)
     VALUES ('GS-1', 2, 'G', 'I'), ('GS-2', 3, 'G', 'I'), ('GS-3', 2, 'G', 'I'),

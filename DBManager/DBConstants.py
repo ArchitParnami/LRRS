@@ -1,5 +1,5 @@
 class DBConstants(object):
-    DBNAME = 'LRRS'
+
     TABLE_USER = 'user_info'
     TABLE_ROOM = 'study_room'
     TABLE_BOOKING = 'bookings'
@@ -23,8 +23,8 @@ class DBConstants(object):
     BOOKING_NAME = 'booking_name'
     BOOKING_ROOM_NUMBER = 'room_no'
 
-    SP_SEARCH_ROOMS = 'sp_searchrooms'
     SP_BOOKING = 'sp_booking'
     SP_GET_USER_BOOKINGS = 'sp_displaybooking'
+    SP_GET_CURRENT_INACTIVE_BOOKINGS = 'sp_current_inactive_bookings'
 
 DBC = DBConstants()
