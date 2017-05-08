@@ -6,6 +6,7 @@ from flask_login import LoginManager, UserMixin, \
                                 login_required, login_user, logout_user 
 
 import random
+from nocache import nocache
 random.seed(1234)
 
 import logging
@@ -77,6 +78,7 @@ def root():
     return "Click <a href='/searchpage.html'>here</a> to search rooms."
 
 @app.route("/login", methods=["GET", "POST"])
+@nocache
 def login():
     if request.method == 'POST':
         username = request.form['username']
@@ -189,6 +191,7 @@ def login():
 
 # logout
 @app.route("/logout")
+@nocache
 @login_required
 def logout():
     logout_user()
@@ -244,6 +247,7 @@ def page_not_found(e):
 
 @app.route('/searchpage.html')
 @login_required
+@nocache
 def searchpage():
     return render_template("searchpage.html")
 
@@ -253,4 +257,4 @@ if __name__ == '__main__':
     handler.setLevel(logging.INFO)
     app.logger.addHandler(handler)
     app.secret_key = os.urandom(12)
-    app.run(debug = True)
+    app.run(threaded=True)
