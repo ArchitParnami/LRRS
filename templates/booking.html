@@ -13,6 +13,40 @@
     <script type="text/javascript" src="../static/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="../static/js/bootstrap-timepicker.min.js"></script>
 
+    <script>
+        $(document).ready(function() {
+            $('.btn').click(function () {
+                    var id = $(this).attr('id')
+                    $('.hdnBtnId').val(id);
+                });
+         })
+    </script>
+
+    <style>
+           table#buttonTable {
+            border-spacing: 60px;
+            border-collapse: separate;
+            border: none;
+           }
+
+           #buttonTable td {
+            padding : 0px;
+            border: 0px;
+            border-style : none;
+           }
+
+           body {
+            padding-top: 0;
+           }
+
+           h1 {
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 60px ;
+            font-style: bold;
+
+           }
+
+       </style>
 
 </head>
 <body style="background: url(../static/image/uncc.jpg) no-repeat center center fixed;
@@ -20,8 +54,22 @@
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover; ">
- <div align="right" style="margin: 2%"><a href="searchpage.html"><button>Home</button></a></div>
-<h1 style="color: midnightblue;" align="center">Book Rooms</h1>
+<form  action="/fromBooking" method="post">
+        <table id="buttonTable" align="center">
+            <tr>
+                 <td>
+                    <button id="btnHome" type="submit" class="btn btn-lg btn-primary btn-block">Home</button>
+                </td>
+                <td>
+                    <h1 style="color: white;" align="center">Book Room</h1>
+                </td>
+                 <td>
+                    <button id="btnLogout" type="submit" class="btn btn-lg btn-primary btn-block">Logout</button>
+                </td>
+            </tr>
+        </table>
+     <input type="hidden" id="hdnBtnId" name="hdnBtnId" class="hdnBtnId">
+    </form>
     <div>
         <form class="form-signin" action="/book" method="post">
 

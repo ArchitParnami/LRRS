@@ -10,30 +10,87 @@
       <script src="../static/js/jquery-3.1.1.js"  type="text/javascript"></script>
       <script type="text/javascript">
          $(document).ready(function() {
+            $('.btn').click(function () {
+                    var id = $(this).attr('id')
+                    $('.hdnBtnId').val(id);
+                });
+         })
+
+         $(document).ready(function() {
                 $('.select').click(function () {
                     var id = $(this).closest("tr").find('td:eq(1)').text();
                     $('.hdnID').val(id);
                 });
              })
+
       </script>
    <style>
        dl {text-align: center;}
-       dl dt {float:left; color: black;}
-       dl dd {color: white}
+       dl dt {float:left; color: green; font-weight: bold;font-size:15px}
+       dl dd {color: white; font-weight: bold; font-size:15px}
+
+       form.form-signin {
+            max-width: 100%;
+          }
+
+         form.form-signin #queryinfo{
+            display: table;
+            width: 203px;
+            margin: 0 auto;
+         }
+
+         table#buttonTable {
+            border-spacing: 60px;
+            border-collapse: separate;
+            border: none;
+           }
+
+           #buttonTable td {
+            padding : 0px;
+            border: 0px;
+            border-style : none;
+           }
+
+           body {
+            padding-top: 0;
+           }
+
+           h1 {
+            font-family: Georgia, "Times New Roman", Times, serif;
+            font-size: 60px ;
+            font-style: bold;
+
+           }
+
    </style>
    </head>
-<div align="right" style="margin: 2%"><a href="searchpage.html"><button>Home</button></a></div>
+
    <body style="background: url(../static/image/uncc.jpg) no-repeat center center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
       background-size: cover; ">
-      <h1 style="color: midnightblue;" align="center">Available Rooms</h1>
+     <form  action="/fromBooking" method="post">
+        <table id="buttonTable" align="center">
+            <tr>
+                 <td>
+                    <button id="btnHome" type="submit" class="btn btn-lg btn-primary btn-block">Home</button>
+                </td>
+                <td>
+                    <h1 style="color: white;" align="center">Available Rooms</h1>
+                </td>
+                 <td>
+                    <button id="btnLogout" type="submit" class="btn btn-lg btn-primary btn-block">Logout</button>
+                </td>
+            </tr>
+        </table>
+     <input type="hidden" id="hdnBtnId" name="hdnBtnId" class="hdnBtnId">
+    </form>
       <form action="/booking" method="post" class="form-signin">
-         <div style="text-align:center">
+         <div id="queryinfo" style="text-align:center">
             <dl>
                 <dt> Search Date </dt>
-                <dd>{{search_date}}</dd>
+                <dd >{{search_date}}</dd>
                 <dt> Search Time</dt>
                 <dd>{{search_time}}</dd>
                 <dt>Room Type</dt>
